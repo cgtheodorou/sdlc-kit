@@ -36,6 +36,7 @@ Gates that start red teach agents to ignore them.
 - CLAUDE.md: add a short `## Agentic workflow` section from `templates/claude-md-section.md`. Do not restate what CLAUDE.md already covers.
 - Unless `--no-ci`: copy `templates/github/claude.yml` and `templates/github/claude-review.yml` into `.github/workflows/`.
   Adapt the setup steps (toolchains, package installs) to match the repo's existing CI so the agent can build and test in Actions.
+  In `claude.yml`, set `--allowedTools` to the toolchain commands the gates use: in `@claude` mode the action ignores `.claude/settings.json` permissions and otherwise allows only read tools and committing.
 
 ## 5. Prove it
 - `node "${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs" run --all` passes.
