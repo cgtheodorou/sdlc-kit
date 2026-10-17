@@ -5,6 +5,7 @@ argument-hint: "[issue-number | description]"
 ---
 
 Run every phase in order. Do not skip a phase because the change looks small; scale its depth instead.
+Steps 6 and 7 are never optional: a small, metadata-only or docs-only change still gets a verifier run and all three reviewers, and CI or the PR review workflow does not replace them.
 
 ## 1. Spec
 If `$ARGUMENTS` is an issue that already has a spec with acceptance criteria, use it.
@@ -15,6 +16,7 @@ For a bug, the spec must contain a confirmed end-to-end reproduction.
 Launch the `sdlc:planner` agent with the spec.
 For anything beyond a few lines, show the user the plan's Approach and Open questions and wait for answers to the open questions.
 If there are none, continue.
+When running non-interactively (for example from an `@claude` mention in CI), do not wait: pick the most conservative answer to each open question and list it under "Assumptions" in the PR body.
 
 ## 3. Branch
 Work in an isolated worktree on a branch named `<type>/<issue>-<slug>` (`feat/42-voice-ptt`, `fix/57-upload-stall`) off the freshly fetched default branch.

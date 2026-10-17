@@ -40,7 +40,8 @@ jobs:
 
       # Toolchain setup goes here, mirroring ci.yml, so the agent can build and run the gates.
 
-      - uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
+      - id: claude
+        uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: https://github.com/cgtheodorou/sdlc-kit.git
@@ -48,4 +49,12 @@ jobs:
           # Only the repo's gate commands (adopt fills these in), never raw interpreters like node -e or npx <anything>.
           claude_args: >-
             --allowedTools "Edit,Write,Agent,Skill,Bash(npm ci:*),Bash(npm run:*),Bash(npm test:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
-            --append-system-prompt "For implementation requests, start by invoking the sdlc:ship skill and follow every phase: spec, plan, implement, sdlc:gate, sdlc:review, then open the PR yourself with gh pr create. For review requests use sdlc:review. Never push to the default branch."
+            --append-system-prompt "For implementation requests, start by invoking the sdlc:ship skill and follow every phase: spec, plan, implement, sdlc:gate, the sdlc:verifier agent, sdlc:review, then open the PR yourself with gh pr create. For review requests use sdlc:review. Never push to the default branch."
+
+      # Private repos only: the transcript can quote repository content.
+      - if: always() && github.event.repository.private && steps.claude.outputs.execution_file
+        uses: actions/upload-artifact@v7
+        with:
+          name: claude-transcript-agent-${{ github.run_id }}
+          path: ${{ steps.claude.outputs.execution_file }}
+          retention-days: 14

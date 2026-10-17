@@ -25,11 +25,22 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
+      - id: claude
+        uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: https://github.com/cgtheodorou/sdlc-kit.git
           plugins: sdlc@sdlc-kit
+          # PRs opened by @claude get reviewed too; forks are already excluded above.
+          allowed_bots: claude[bot]
           prompt: /sdlc:review ${{ github.event.pull_request.number }} --comment
           claude_args: >-
             --allowedTools "Read,Glob,Grep,Agent,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(git diff:*),Bash(git log:*),Bash(git merge-base:*),Bash(git show:*),Bash(git ls-files:*)"
+
+      # Private repos only: the transcript can quote repository content.
+      - if: always() && github.event.repository.private && steps.claude.outputs.execution_file
+        uses: actions/upload-artifact@v7
+        with:
+          name: claude-transcript-review-${{ github.run_id }}
+          path: ${{ steps.claude.outputs.execution_file }}
+          retention-days: 14
