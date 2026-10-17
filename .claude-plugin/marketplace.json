@@ -1,0 +1,12 @@
+{
+  "name": "sdlc-kit",
+  "description": "Agentic SDLC kit: spec, plan, implement, verify, review and ship with Claude Code",
+  "owner": { "name": "Charalambos Theodorou" },
+  "plugins": [
+    {
+      "name": "sdlc",
+      "source": "./plugins/sdlc",
+      "description": "Lifecycle skills, review agents, and quality-gate hooks driven by each repo's .claude/sdlc.json"
+    }
+  ]
+}

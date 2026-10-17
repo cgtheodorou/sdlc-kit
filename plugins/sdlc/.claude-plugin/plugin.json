@@ -1,0 +1,8 @@
+{
+  "name": "sdlc",
+  "description": "Agentic SDLC: adopt or bootstrap a repo, then spec, plan, implement, gate, verify, review and ship every change",
+  "author": { "name": "Charalambos Theodorou" },
+  "repository": "https://github.com/cgtheodorou/sdlc-kit",
+  "license": "MIT",
+  "keywords": ["sdlc", "workflow", "quality-gates", "review"]
+}

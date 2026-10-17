@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "sdlc-kit": {
+      "source": { "source": "github", "repo": "cgtheodorou/sdlc-kit" }
+    }
+  },
+  "enabledPlugins": {
+    "sdlc@sdlc-kit": true
+  },
+  "permissions": {
+    "allow": [],
+    "deny": []
+  }
+}

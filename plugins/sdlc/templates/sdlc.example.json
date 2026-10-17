@@ -1,0 +1,13 @@
+{
+  "format": [
+    { "files": "**/*.{ts,js,svelte}", "run": "npx prettier --write {file}" },
+    { "files": "src/**/*.rs", "run": "rustfmt --edition 2021 {file}" }
+  ],
+  "gates": [
+    { "name": "lint", "files": ["src/**", "package.json"], "run": "npm run lint" },
+    { "name": "typecheck", "files": "src/**", "run": "npm run check", "timeout": 180 },
+    { "name": "unit tests", "files": "src/**", "run": "npm test" },
+    { "name": "e2e smoke", "files": "src/**", "run": "npx playwright test", "stage": "pr", "timeout": 900 }
+  ],
+  "verify": "Use the project `verify` skill: start the dev server with a scratch database and drive the changed flow with Playwright at desktop and 390x844 mobile sizes."
+}

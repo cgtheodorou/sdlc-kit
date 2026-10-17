@@ -1,0 +1,9 @@
+{
+  "name": "sdlc-kit",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test 'plugins/**/*.test.mjs'"
+  }
+}
