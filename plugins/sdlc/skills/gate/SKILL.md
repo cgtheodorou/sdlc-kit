@@ -4,15 +4,15 @@ description: Run this repo's quality gates from .claude/sdlc.json (lint, typeche
 argument-hint: "[--all] [--stage=stop|pr]"
 ---
 
-Run:
+Run it from the repository root, exactly as written (the plugin puts `sdlc-gate` on PATH):
 
 ```bash
-node "${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs" run $ARGUMENTS
+sdlc-gate run $ARGUMENTS
 ```
 
 - With no arguments it runs every gate (`stop` and `pr` stages) whose `files` globs match a file changed on this branch: uncommitted, untracked, or committed since the merge-base with the default branch.
 - `--all` ignores the changed-file filter. `--stage=stop` runs only the fast gates the Stop hook runs.
-- `node "${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs" list` shows what is configured.
+- `sdlc-gate list` shows what is configured.
 
 If a gate fails, fix the root cause and re-run until everything passes.
 Never weaken, skip or delete a check to get green.

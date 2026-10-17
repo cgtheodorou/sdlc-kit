@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# A stable command name for the gates, so permission rules need not name the hashed plugin cache path.
+exec node "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/../scripts/gate.mjs" "$@"

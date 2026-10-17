@@ -121,3 +121,12 @@ test('should fail with a clear message when a gate times out', () => {
   assert.match(r.json.reason, /timed out after 1s/);
   rmSync(dir, { recursive: true });
 });
+
+test('should run the gates when invoked through the sdlc-gate command on PATH', () => {
+  const dir = makeRepo({ gates: [{ name: 'unit', files: 'src/**', run: 'true' }] });
+  const bin = path.join(import.meta.dirname, '..', 'bin');
+  const r = spawnSync('sdlc-gate', ['list'], { cwd: dir, encoding: 'utf8', env: { ...process.env, PATH: `${bin}:${process.env.PATH}` } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /unit/);
+  rmSync(dir, { recursive: true });
+});

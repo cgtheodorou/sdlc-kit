@@ -43,6 +43,7 @@ Fix every blocking finding and the nits that are clearly right, re-run gates, an
 Disagree with a finding only with a stated reason.
 
 ## 8. PR
+Open the PR only after the verifier and all three reviewers have returned and their findings are addressed; never end your turn while one is still running.
 Push the branch and open a PR with `gh pr create`:
 - Title: the Conventional Commit summary.
 - Body: `Closes #<issue>`, what changed and why, the acceptance criteria as a checked list, the verification evidence (what was driven, screenshots attached or linked), and anything left for the human reviewer.

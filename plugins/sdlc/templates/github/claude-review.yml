@@ -33,9 +33,12 @@ jobs:
           plugins: sdlc@sdlc-kit
           # PRs opened by @claude get reviewed too; forks are already excluded above.
           allowed_bots: claude[bot]
+          # Foreground subagents, since a headless turn that ends early drops their results.
+          settings: '{"env":{"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS":"1"}}'
           prompt: /sdlc:review ${{ github.event.pull_request.number }} --comment
           claude_args: >-
             --allowedTools "Read,Glob,Grep,Agent,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(git diff:*),Bash(git log:*),Bash(git merge-base:*),Bash(git show:*),Bash(git ls-files:*)"
+            --append-system-prompt "Run each Bash command from the repository root as one simple command: no cd, no git -C, and no chaining with && or ;, because every part must match the allowlist and anything else is denied. Inspect files with the Read, Grep and Glob tools."
 
       # Private repos only: the transcript can quote repository content.
       - if: always() && github.event.repository.private && steps.claude.outputs.execution_file

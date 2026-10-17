@@ -23,7 +23,7 @@ Classify each one:
 Scope every gate with `files` globs so a change only triggers the checks it can affect.
 
 ## 3. Baseline
-Run all gates with the new config (`node "${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs" run --all`).
+Run all gates with the new config (`sdlc-gate run --all`).
 Fix lint errors, failing tests and flakiness you find, in separate commits before the adoption commit.
 If a fix is large, stop and ask the user whether to fix now or quarantine with a tracking issue.
 Gates that start red teach agents to ignore them.
@@ -39,7 +39,7 @@ Gates that start red teach agents to ignore them.
   In `claude.yml`, set `--allowedTools` to the exact commands the gates use, never raw interpreters (`node:*`, `npx:*`, `python:*`): in `@claude` mode the action ignores `.claude/settings.json` permissions and otherwise allows only read tools and committing.
 
 ## 5. Prove it
-- `node "${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs" run --all` passes.
+- `sdlc-gate run --all` passes.
 - Touch a file covered by a formatter and confirm the PostToolUse hook runs it.
 - Introduce a deliberate gate failure, confirm the Stop hook blocks with a useful reason, then revert it.
 

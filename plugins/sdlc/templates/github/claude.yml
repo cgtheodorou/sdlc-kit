@@ -46,12 +46,12 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: https://github.com/cgtheodorou/sdlc-kit.git
           plugins: sdlc@sdlc-kit
-          # No AI co-author trailer or "Generated with" footer on commits and PRs.
-          settings: '{"attribution":{"commit":"","pr":""}}'
+          # No AI attribution on commits and PRs; foreground subagents, since a headless turn that ends early drops their results.
+          settings: '{"attribution":{"commit":"","pr":""},"env":{"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS":"1"}}'
           # Only the repo's gate commands (adopt fills these in), never raw interpreters like node -e or npx <anything>.
           claude_args: >-
-            --allowedTools "Edit,Write,Agent,Skill,Bash(npm ci:*),Bash(npm run:*),Bash(npm test:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
-            --append-system-prompt "For implementation requests, start by invoking the sdlc:ship skill and follow every phase: spec, plan, implement, sdlc:gate, the sdlc:verifier agent, sdlc:review, then open the PR yourself with gh pr create. For review requests use sdlc:review. Never push to the default branch."
+            --allowedTools "Edit,Write,Agent,Skill,Bash(sdlc-gate:*),Bash(npm ci:*),Bash(npm run:*),Bash(npm test:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
+            --append-system-prompt "For implementation requests, start by invoking the sdlc:ship skill and follow every phase: spec, plan, implement, sdlc:gate, the sdlc:verifier agent, sdlc:review, then open the PR yourself with gh pr create. For review requests use sdlc:review. Never push to the default branch. Run each Bash command from the repository root as one simple command: no cd, no git -C, and no chaining with && or ;, because every part must match the allowlist and anything else is denied. Inspect files with the Read, Grep and Glob tools."
 
       # Private repos only: the transcript can quote repository content.
       - if: always() && github.event.repository.private && steps.claude.outputs.execution_file
