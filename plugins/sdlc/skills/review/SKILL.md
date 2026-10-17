@@ -15,7 +15,7 @@ argument-hint: "[base-ref | PR-number] [--comment]"
    - `sdlc:spec-reviewer` with the diff command, commits and spec.
    - `sdlc:standards-reviewer` with the diff command and commits.
    - A security pass: if the `claude-security` plugin is available use its change-scan; otherwise a read-only general-purpose subagent briefed to look only for exploitable vulnerabilities introduced by this diff, each with a concrete attack scenario.
-   Tell each reviewer to search with the Grep, Glob and Read tools rather than shell pipelines, since CI permits only a narrow set of shell commands.
+   Tell each reviewer to search with the Grep, Glob and Read tools rather than shell pipelines, since CI permits only a narrow set of shell commands (no `grep`, `git grep` or `git fetch`; the checkout already has full history).
    Every reviewer must look beyond the diff for places the change should have touched but did not (other docs, callers, tests, config stating the same fact).
 4. Report under `## Spec`, `## Standards & correctness` and `## Security`, keeping each axis's findings separate and ordered blocking first.
    End with one line: counts of blocking findings per axis and an overall `APPROVE` or `CHANGES REQUESTED` (any blocking finding means changes requested).
