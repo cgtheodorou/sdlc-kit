@@ -45,8 +45,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: https://github.com/cgtheodorou/sdlc-kit.git
           plugins: sdlc@sdlc-kit
-          # The agent runs the code it writes, so it gets the build toolchains; only write-access users can trigger it.
-          # Replace the toolchain entries with the ones this repo's gates use (adopt fills these in).
+          # Only the repo's gate commands (adopt fills these in), never raw interpreters like node -e or npx <anything>.
           claude_args: >-
-            --allowedTools "Edit,Write,Agent,Skill,Bash(npm:*),Bash(npx:*),Bash(node:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
+            --allowedTools "Edit,Write,Agent,Skill,Bash(npm ci:*),Bash(npm run:*),Bash(npm test:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
             --append-system-prompt "For implementation requests, start by invoking the sdlc:ship skill and follow every phase: spec, plan, implement, sdlc:gate, sdlc:review, then open the PR yourself with gh pr create. For review requests use sdlc:review. Never push to the default branch."
