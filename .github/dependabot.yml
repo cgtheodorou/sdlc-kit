@@ -1,6 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directories: ["/", "/plugins/sdlc/templates/github"]
+    directory: "/"
     schedule:
       interval: weekly
