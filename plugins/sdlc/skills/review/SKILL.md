@@ -11,7 +11,7 @@ argument-hint: "[base-ref | PR-number] [--comment]"
    Use `git diff <base>...HEAD` and `git log <base>..HEAD --oneline`. Stop if the diff is empty.
 2. Find the spec: issues referenced by the PR or commits (`Closes #n`, `#n`), then `gh issue view <n> --comments`.
    With no linked issue, the PR description is the spec.
-3. Launch in parallel, in one message, and wait for all three to return before writing anything (do not end your turn or post while any is still running; in a headless or CI run the session ends with your turn):
+3. Always launch all three reviewers, however small the diff, in parallel in one message, and wait for all three to return before writing anything (do not end your turn or post while any is still running; in a headless or CI run the session ends with your turn):
    - `sdlc:spec-reviewer` with the diff command, commits and spec.
    - `sdlc:standards-reviewer` with the diff command and commits.
    - A security pass: if the `claude-security` plugin is available use its change-scan; otherwise a read-only general-purpose subagent briefed to look only for exploitable vulnerabilities introduced by this diff, each with a concrete attack scenario.
@@ -19,5 +19,5 @@ argument-hint: "[base-ref | PR-number] [--comment]"
    Every reviewer must look beyond the diff for places the change should have touched but did not (other docs, callers, tests, config stating the same fact).
 4. Report under `## Spec`, `## Standards & correctness` and `## Security`, keeping each axis's findings separate and ordered blocking first.
    End with one line: counts of blocking findings per axis and an overall `APPROVE` or `CHANGES REQUESTED` (any blocking finding means changes requested).
-5. With `--comment` and a PR, post the full Markdown report (headings and all) with `gh pr comment <n> --body "<report>"`, editing your previous review comment instead of adding a new one if one exists (`gh pr comment <n> --edit-last`).
+5. With `--comment` and a PR, post the full Markdown report, keeping its headings and line breaks, through a quoted heredoc (`gh pr comment <n> --body-file - <<'EOF'` ... `EOF`), editing your previous review comment instead of adding a new one if one exists (`gh pr comment <n> --edit-last`).
    Where an inline-comment tool is available, also attach blocking findings to their lines.
