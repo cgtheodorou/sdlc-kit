@@ -37,6 +37,7 @@ Gates that start red teach agents to ignore them.
 - Unless `--no-ci`: copy `templates/github/claude.yml` and `templates/github/claude-review.yml` into `.github/workflows/`.
   Adapt the setup steps (toolchains, package installs) to match the repo's existing CI so the agent can build and test in Actions.
   In `claude.yml`, set `--allowedTools` to the exact commands the gates use, never raw interpreters (`node:*`, `npx:*`, `python:*`): in `@claude` mode the action ignores `.claude/settings.json` permissions and otherwise allows only read tools and committing.
+  The agent is told never to `cd`, so a project in a subdirectory also needs the forms that name it: `npm --prefix <dir> ...`, `cargo ... --manifest-path <dir>/Cargo.toml`, `dotnet ... <dir>`.
 
 ## 5. Prove it
 - `sdlc-gate run --all` passes.
