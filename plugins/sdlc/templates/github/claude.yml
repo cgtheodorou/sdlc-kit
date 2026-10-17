@@ -46,6 +46,8 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: https://github.com/cgtheodorou/sdlc-kit.git
           plugins: sdlc@sdlc-kit
+          # No AI co-author trailer or "Generated with" footer on commits and PRs.
+          settings: '{"attribution":{"commit":"","pr":""}}'
           # Only the repo's gate commands (adopt fills these in), never raw interpreters like node -e or npx <anything>.
           claude_args: >-
             --allowedTools "Edit,Write,Agent,Skill,Bash(npm ci:*),Bash(npm run:*),Bash(npm test:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh pr comment:*),Bash(gh issue view:*),Bash(gh issue comment:*)"

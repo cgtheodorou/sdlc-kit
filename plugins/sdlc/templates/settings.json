@@ -10,5 +10,9 @@
   "permissions": {
     "allow": [],
     "deny": []
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   }
 }
